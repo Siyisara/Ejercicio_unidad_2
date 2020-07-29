@@ -1,13 +1,24 @@
 
 package Operador;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Principal {
     private ArrayList<Empleado> lista;
 
 	public Principal() {
 		
+		private ArrayList<Empleado> lista;
+
+	public Principal() {
+		
 		lista = new ArrayList<Empleado>();
+		lista.add(new Empleado( 1,"Diego", "Melo", 1200000.0));
+        lista.add(new Empleado(2, "Wilson", "Calderón", 1300000.0));
+        lista.add(new Empleado(10,"Dayana", "Ovalle",  500000.0));
+        lista.add(new Empleado(4,"Sebastián", "Alarcón",  200000.1));
+        lista.add(new Empleado(11,"Julián", "Muñoz",  400000.1));
+        lista.add(new Empleado(15,"Santiago", "Goyes",  300000.5));
 
 	}
 	
@@ -65,6 +76,58 @@ public class Principal {
 		
 	}
 	
+	public String empleadoConMayorSalario() {
+		return lista.stream()
+                .max(Comparator.comparing(Empleado::getSalario))
+                .map(Empleado::toString)
+                .orElse("No hay empleados");
+	}
+	
+	public String empleadoConMenorSalario() {
+		return lista.stream()
+                .min(Comparator.comparing(Empleado::getSalario))
+                .map(Empleado::toString)
+                .orElse("No hay empleados");
+	}
+	
+	public String ordenarPorNombre() {
+		String res = "";
+		res = lista.stream()
+        .sorted(Comparator.comparing(Empleado::getNombre))
+        .map(Empleado::toString)
+        .reduce(" ", (a,b) -> {
+        	return a+"\n"+b; 
+        });
+		
+		return res;
+	}
+	
+	public long mostrarNumeroTotalDeNombresPorA() {
+		return lista.stream()
+        .filter(empleado -> empleado.getApellido().toUpperCase().startsWith("A"))
+        .count();
+		
+	}
+	
+	public String cincoEmpleadosConMayorSalario() {
+		 return lista.stream()
+                .sorted(Comparator.comparing(Empleado::getSalario).reversed())
+                .map(Empleado::toString)
+                .limit(5)
+                .reduce(" ", (a,b) -> {
+                	return a+"\n"+b; 
+                });
+	}
+	
+	public double sumaSalariosMayorSiete() {
+		return lista.stream().filter((lista) -> {
+			return lista.getSalario() > 700000;
+		})
+		.map(Empleado::getSalario)
+		.reduce(0.0, (a,b) ->{
+			return a+b;
+		});
+	}
 	
 	public String mostrar() {
 		String res  = "";
